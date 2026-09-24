@@ -1,0 +1,80 @@
+[project]
+name = "airflow-docker-compose"
+version = "0.1.0"
+description = "Run Apache Airflow locally with Docker Compose"
+readme = "README.md"
+authors = [
+    { name = "1cadumagalhaes", email = "github@cadumagalhaes.dev" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "airsql>=0.18.1",
+    "apache-airflow-providers-postgres>=7.0.2",
+    "apache-airflow-providers-standard>=1.19.0",
+    "pydantic>=2.0",
+]
+
+[dependency-groups]
+dev = [
+    "apache-airflow==3.3.2",
+    "pytest>=9.0.0",
+    "ruff>=0.14.4",
+    "ty>=0.0.18",
+    "sqruff>=0.40.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+select = [
+    'I',    # isort
+    'F',    # pyflakes
+    'E',    # pycodestyle errors
+    'W',    # pycodestyle warnings
+    'B',    # bugbear
+    'PT',   # pytest style
+    'AIR3', # airflow migration rules
+]
+# mccabe (C901 complexity) fires on long-but-linear example DAG bodies.
+ignore = [
+    'E501', # line length handled by formatter
+    'C901',
+]
+
+[tool.ruff.lint.per-file-ignores]
+"dags/*.py" = ["AIR301"] # @sql decorators trigger false Airflow 2 imports
+
+[tool.ruff.format]
+quote-style = 'single'
+docstring-code-format = true
+
+[tool.ty.src]
+include = ["dags", "tests"]
+exclude = [".venv", "data", "logs"]
+
+[tool.ty.rules]
+# Airflow's dynamic decorators and the sys.path DAG import in tests trip these.
+call-non-callable = "warn"
+
+[[tool.ty.overrides]]
+include = ["tests"]
+rules = { unresolved-import = "ignore" }
+
+# The Apache example DAGs use TaskFlow XComArg proxies and `params` lookups
+# exactly as upstream writes them; Airflow SDK stubs can't express that, so
+# these four rules fire false positives there. Scoped to examples only.
+[[tool.ty.overrides]]
+include = ["dags/examples", "dags/api_etl_tutorial_dag.py"]
+rules = { invalid-argument-type = "ignore", not-subscriptable = "ignore", unsupported-operator = "ignore", unresolved-attribute = "ignore", invalid-return-type = "ignore" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.sqruff]
+line-length = 88
+
+[tool.sqruff.lint]
+exclude = "data,.venv"

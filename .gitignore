@@ -1,0 +1,24 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.pytest_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv
+
+# Airflow test scratch metadata database
+.test_airflow/
+
+# Local env file (keep .env.example tracked)
+.env
+
+# Postgres data files (keep the folder via .gitkeep)
+data/postgres/*
+!data/postgres/.gitkeep
+logs/*
+!logs/.gitkeep
