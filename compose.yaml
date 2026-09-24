@@ -5,6 +5,7 @@ x-airflow-common: &airflow-common
   image: ${AIRFLOW_IMAGE_NAME:-airflow-local:latest}
   env_file: .env
   environment: &airflow-common-env
+    PYTHONPATH: /opt/airflow/plugins
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
     # Tasks (running in this same compose network) talk back to the API server
     AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://airflow-apiserver:8080/execution/

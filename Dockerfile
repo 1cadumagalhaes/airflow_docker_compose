@@ -20,6 +20,6 @@ COPY --chown=airflow:root dags ./dags
 # `uv pip install` as the airflow user lands in the user site-packages.
 # Services may run as a different host-mapped UID (AIRFLOW_UID), which can't
 # see that directory by default — expose it through PYTHONPATH.
-ENV PYTHONPATH=/home/airflow/.local/lib/python3.12/site-packages
+ENV PYTHONPATH=/home/airflow/.local/lib/python3.12/site-packages:/opt/airflow/plugins
 
 USER airflow

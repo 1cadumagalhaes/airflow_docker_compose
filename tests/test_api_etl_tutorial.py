@@ -8,10 +8,10 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-DAGS_DIR = Path(__file__).resolve().parent.parent / 'dags'
-sys.path.insert(0, str(DAGS_DIR))
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
 
-from launch_api import LaunchResponse, normalize_launch  # noqa: E402
+from plugins.launch_api import LaunchResponse, normalize_launch  # noqa: E402
 
 
 def test_normalize_launch_uses_pad_country_and_nullable_details():

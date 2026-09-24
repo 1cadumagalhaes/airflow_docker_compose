@@ -18,7 +18,8 @@ from db_interface import (
     sql,
     upsert_rows,
 )
-from launch_api import fetch_launches
+
+from plugins.launch_api import fetch_launches
 
 POSTGRES_CONN_ID = 'postgres_local'
 log = logging.getLogger(__name__)

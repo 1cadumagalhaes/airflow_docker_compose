@@ -42,12 +42,12 @@ dados do Postgres local.
 O DAG `api_etl_tutorial` foi organizado para mostrar a transicao de um script
 Python comum para um workflow Airflow:
 
-1. `dags/launch_api.py` contem os modelos Pydantic, a chamada HTTP, a validacao
+1. `plugins/launch_api.py` contem os modelos Pydantic, a chamada HTTP, a validacao
    da resposta e a normalizacao dos lancamentos. Ele pode ser executado sem
    Airflow e consulta a API publica:
 
    ```bash
-   uv run --env-file .env python dags/launch_api.py
+   uv run --env-file .env python plugins/launch_api.py
    ```
 
    A API limita requisicoes anonimas; use o endpoint de desenvolvimento ou
@@ -144,8 +144,10 @@ acesso a API externa e ao Postgres local definidos em `.env`.
 |-- dags/
 |   |-- api_etl_tutorial_dag.py
 |   |-- airsql_dag_run_stats.py
-|   |-- launch_api.py
 |   `-- examples/
+|-- plugins/
+|   |-- __init__.py
+|   `-- launch_api.py
 |-- tests/
 |-- config/
 |-- logs/
