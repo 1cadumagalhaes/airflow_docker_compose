@@ -55,13 +55,18 @@ docstring-code-format = true
 include = ["dags", "tests"]
 exclude = [".venv", "data", "logs"]
 
+[tool.ty.environment]
+# DAGs import dags/lib helpers as top-level modules (Airflow puts dags/ on
+# sys.path), so point ty's module search there too.
+extra-paths = ["dags"]
+
 [tool.ty.rules]
 # Airflow's dynamic decorators and the sys.path DAG import in tests trip these.
 call-non-callable = "warn"
 
 [[tool.ty.overrides]]
 include = ["tests"]
-rules = { unresolved-import = "ignore" }
+rules = { unresolved-import = "ignore", unresolved-attribute = "ignore" }
 
 # The Apache example DAGs use TaskFlow XComArg proxies and `params` lookups
 # exactly as upstream writes them; Airflow SDK stubs can't express that, so

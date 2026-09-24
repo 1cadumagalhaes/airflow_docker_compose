@@ -13,13 +13,12 @@ import logging
 import pendulum
 from airflow.sdk import Param, dag, task
 from airsql import Table
-from db_interface import (
+from lib.db_interface import (
     ensure_table,
     sql,
     upsert_rows,
 )
-
-from plugins.launch_api import fetch_launches
+from lib.launch_api import fetch_launches
 
 POSTGRES_CONN_ID = 'postgres_local'
 log = logging.getLogger(__name__)

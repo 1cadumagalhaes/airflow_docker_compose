@@ -1,8 +1,8 @@
 """Fetch Launch Library 2 data without Airflow.
 
-Run this first-stage tutorial script with `uv run dags/launch_api.py`. The DAG imports
-`fetch_launches` and supplies parameters, while Airflow handles scheduling,
-retries, and downstream database tasks.
+Run this first-stage tutorial script with `uv run python dags/lib/launch_api.py`.
+The DAG imports `fetch_launches` and supplies parameters, while Airflow handles
+scheduling, retries, and downstream database tasks.
 """
 
 from __future__ import annotations

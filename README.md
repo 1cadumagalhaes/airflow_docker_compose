@@ -42,12 +42,12 @@ dados do Postgres local.
 O DAG `api_etl_tutorial` foi organizado para mostrar a transicao de um script
 Python comum para um workflow Airflow:
 
-1. `plugins/launch_api.py` contem os modelos Pydantic, a chamada HTTP, a validacao
+1. `dags/lib/launch_api.py` contem os modelos Pydantic, a chamada HTTP, a validacao
    da resposta e a normalizacao dos lancamentos. Ele pode ser executado sem
    Airflow e consulta a API publica:
 
    ```bash
-   uv run --env-file .env python plugins/launch_api.py
+   uv run --env-file .env python dags/lib/launch_api.py
    ```
 
    A API limita requisicoes anonimas; use o endpoint de desenvolvimento ou
@@ -57,9 +57,12 @@ Python comum para um workflow Airflow:
    agendamento, parametros de execucao no formulario do Airflow, dependencias
    TaskFlow e persistencia.
 
-3. `dags/db_interface.py` concentra o DDL e o UPSERT das linhas recebidas da
+3. `dags/lib/db_interface.py` concentra o DDL e o UPSERT das linhas recebidas da
    API. O `id` do lancamento e a chave de conflito, tornando repeticoes
    idempotentes. A consulta de resumo usa `@sql.dataframe` do Airsql.
+
+Os modulos em `dags/lib/` sao importados pelos DAGs, mas ficam fora da descoberta
+de DAGs via `dags/.airflowignore`.
 
 O formulario do DAG oferece `limit` (padrao 50, entre 1 e 100) e `mode`
 (padrao `detailed`, com opcoes `list`, `normal` e `detailed`). Lancamentos sem
@@ -144,14 +147,14 @@ acesso a API externa e ao Postgres local definidos em `.env`.
 |-- dags/
 |   |-- api_etl_tutorial_dag.py
 |   |-- airsql_dag_run_stats.py
+|   |-- .airflowignore
+|   |-- lib/
+|   |   |-- db_interface.py
+|   |   `-- launch_api.py
 |   `-- examples/
-|-- plugins/
-|   |-- __init__.py
-|   `-- launch_api.py
 |-- tests/
 |-- config/
 |-- logs/
-|-- plugins/
 |-- data/postgres/
 |-- compose.yaml
 |-- Dockerfile
