@@ -102,14 +102,6 @@ def print_launch_summary(summary_df) -> None:
     dag_display_name='API ETL Tutorial',
     schedule='@daily',
     start_date=pendulum.datetime(2026, 1, 1, tz='UTC'),
-    catchup=False,
-    tags=['tutorial'],
-    default_args={
-        'owner': 'cadu',
-        'retries': 1,
-        'retry_delay': datetime.timedelta(minutes=5),
-    },
-    owner_links={'cadu': 'https://blog.cadumagalhaes.dev'},
     params={
         'limit': Param(
             50,
@@ -127,6 +119,11 @@ def print_launch_summary(summary_df) -> None:
             description='Level of detail returned for each launch.',
         ),
     },
+    tags=['tutorial'],
+    default_args={
+        'owner': 'cadu',
+    },
+    owner_links={'cadu': 'https://blog.cadumagalhaes.dev'},
     doc_md=__doc__,
 )
 def api_etl_tutorial():
